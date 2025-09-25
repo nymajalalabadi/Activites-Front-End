@@ -3,6 +3,7 @@ import { Grid, List } from "semantic-ui-react";
 import { Activity } from '../../../models/Activity';
 import ActivityList from './ActivityList';
 import ActivityDetails from '../details/ActivityDetails';
+import ActivityForm from '../form/ActivityForm';
 
 interface Props {
     activities: Activity[];
@@ -24,7 +25,7 @@ const ActivityDashboard = (props: Props) => {
               activity={props.selectedActivity}
               cancelSelectActivity={props.cancelSelectActivity}
           />}
-
+          <ActivityForm />
       </Grid.Column>
     </Grid>
   )
