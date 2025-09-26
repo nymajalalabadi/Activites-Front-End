@@ -8,30 +8,36 @@ interface Props{
 }
 
 const ActivityForm = (props: Props) => {
-  const [formData, setFormData] = useState({
+
+  const initialState = props.selectedActivity ?? {
+    id: '',
     title: '',
-    description: '',
     category: '',
     date: '',
+    description: '',
     city: '',
     venue: ''
-  });
+  }
+
+  const [activity, setActivity] = useState(initialState);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setActivity(prev => ({
       ...prev,
       [name]: value
     }));
   };
 
   const handleSubmit = () => {
-    console.log('Form submitted:', formData);
+    console.log('Form submitted:', activity);
   };
+  
 
   const handleCancel = () => {
     props.closeForm();
-    setFormData({
+    setActivity({
+      id: '',
       title: '',
       description: '',
       category: '',
@@ -59,21 +65,13 @@ const ActivityForm = (props: Props) => {
         Create Activity
       </Header>
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} autoComplete='off'>
         <Grid columns={2} stackable>
           <Grid.Row>
             <Grid.Column width={8}>
               <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input
-                  name='title'
-                  placeholder='Activity Title'
-                  value={formData.title}
-                  onChange={handleInputChange}
-                  icon='tag'
-                  iconPosition='left'
-                  size='small'
-                  required
-                  style={{
+                <Form.Input name='title' placeholder='Activity Title' value={activity.title} onChange={handleInputChange} icon='tag' iconPosition='left'
+                  size='small' required style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5'
                   }}
@@ -83,15 +81,8 @@ const ActivityForm = (props: Props) => {
 
             <Grid.Column width={8}>
               <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input
-                  name='category'
-                  placeholder='Category'
-                  value={formData.category}
-                  onChange={handleInputChange}
-                  icon='list'
-                  iconPosition='left'
-                  size='small'
-                  style={{
+                <Form.Input name='category'  placeholder='Category' value={activity.category} onChange={handleInputChange} icon='list'
+                  iconPosition='left' size='small' style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5'
                   }}
@@ -103,13 +94,8 @@ const ActivityForm = (props: Props) => {
           <Grid.Row>
             <Grid.Column width={16}>
               <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.TextArea
-                  name='description'
-                  placeholder='Activity Description'
-                  value={formData.description}
-                  onChange={handleInputChange}
-                  rows={2}
-                  style={{
+                <Form.TextArea name='description' placeholder='Activity Description' value={activity.description} onChange={handleInputChange}
+                  rows={2} style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5',
                     resize: 'none'
@@ -122,15 +108,8 @@ const ActivityForm = (props: Props) => {
           <Grid.Row>
             <Grid.Column width={8}>
               <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input
-                  name='date'
-                  type='datetime-local'
-                  value={formData.date}
-                  onChange={handleInputChange}
-                  icon='calendar'
-                  iconPosition='left'
-                  size='small'
-                  style={{
+                <Form.Input name='date' type='datetime-local' value={activity.date} onChange={handleInputChange}
+                  icon='calendar' iconPosition='left' size='small'  style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5'
                   }}
@@ -140,15 +119,8 @@ const ActivityForm = (props: Props) => {
 
             <Grid.Column width={8}>
               <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input
-                  name='city'
-                  placeholder='City'
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  icon='building'
-                  iconPosition='left'
-                  size='small'
-                  style={{
+                <Form.Input name='city' placeholder='City' value={activity.city} onChange={handleInputChange} icon='building'
+                  iconPosition='left' size='small' style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5'
                   }}
@@ -160,15 +132,8 @@ const ActivityForm = (props: Props) => {
           <Grid.Row>
             <Grid.Column width={16}>
               <Form.Field style={{ marginBottom: '15px' }}>
-                <Form.Input
-                  name='venue'
-                  placeholder='Venue Address'
-                  value={formData.venue}
-                  onChange={handleInputChange}
-                  icon='map pin'
-                  iconPosition='left'
-                  size='small'
-                  style={{
+                <Form.Input name='venue' placeholder='Venue Address' value={activity.venue} onChange={handleInputChange} icon='map pin'
+                  iconPosition='left' size='small' style={{
                     borderRadius: '6px',
                     border: '1px solid #d4d4d5'
                   }}
@@ -180,10 +145,7 @@ const ActivityForm = (props: Props) => {
           <Grid.Row>
             <Grid.Column width={16}>
               <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-                <Button
-                  type="button"
-                  onClick={handleCancel}
-                  size='small'
+                <Button type="button" onClick={handleCancel} size='small'
                   style={{
                     borderRadius: '6px',
                     backgroundColor: '#f8f9fa',
@@ -194,10 +156,7 @@ const ActivityForm = (props: Props) => {
                 >
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  size='small'
-                  primary
+                <Button type="submit" size='small' primary
                   style={{
                     borderRadius: '6px',
                     padding: '8px 16px',
