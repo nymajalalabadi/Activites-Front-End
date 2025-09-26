@@ -4,7 +4,7 @@ import { Activity } from '../../../models/Activity';
 
 interface Props {
     activities: Activity[];
-    selectActivity:(id:string)=>void;
+    selectActivity:(id:string) => void;
 }
 
 const ActivityList = (props: Props) => {

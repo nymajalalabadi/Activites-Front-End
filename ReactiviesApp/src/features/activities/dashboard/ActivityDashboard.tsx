@@ -7,12 +7,13 @@ import ActivityForm from '../form/ActivityForm';
 
 interface Props {
     activities: Activity[];
-    selectedActivity: Activity | undefined,
-    selectActivity: (id: string) => void,
-    cancelSelectActivity: () => void,
-    editMode: boolean,
-    openForm: (id?: string) => void,
-    closeForm: () => void
+    selectedActivity: Activity | undefined;
+    selectActivity: (id: string) => void;
+    cancelSelectActivity: () => void;
+    editMode: boolean;
+    openForm: (id?: string) => void;
+    closeForm: () => void;
+    createOrEditActivity:(activity : Activity) => void;
 }
 
 const ActivityDashboard = (props: Props) => {
@@ -30,7 +31,7 @@ const ActivityDashboard = (props: Props) => {
               cancelSelectActivity={props.cancelSelectActivity}
               openForm={props.openForm}
           />}
-          {props.editMode && <ActivityForm closeForm={props.closeForm} selectedActivity={props.selectedActivity} />}
+          {props.editMode && <ActivityForm closeForm={props.closeForm} selectedActivity={props.selectedActivity} createOrEditActivity={props.createOrEditActivity}/>}
       </Grid.Column>
     </Grid>
   )

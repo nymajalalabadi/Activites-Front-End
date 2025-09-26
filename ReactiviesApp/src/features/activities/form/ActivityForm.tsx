@@ -5,6 +5,7 @@ import { Activity } from '../../../models/Activity';
 interface Props{
   selectedActivity: Activity | undefined;
   closeForm: () => void;
+  createOrEditActivity:(activity : Activity) => void;
 }
 
 const ActivityForm = (props: Props) => {
@@ -30,7 +31,7 @@ const ActivityForm = (props: Props) => {
   };
 
   const handleSubmit = () => {
-    console.log('Form submitted:', activity);
+    props.createOrEditActivity(activity)
   };
   
 
