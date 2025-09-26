@@ -9,7 +9,10 @@ interface Props {
     activities: Activity[];
     selectedActivity: Activity | undefined,
     selectActivity: (id: string) => void,
-    cancelSelectActivity: () => void
+    cancelSelectActivity: () => void,
+    editMode: boolean,
+    openForm: (id?: string) => void,
+    closeForm: () => void
 }
 
 const ActivityDashboard = (props: Props) => {
@@ -17,15 +20,17 @@ const ActivityDashboard = (props: Props) => {
     <Grid>
       <Grid.Column width='10'>
         <List>
-          <ActivityList activities={props.activities} selectActivity={props.selectActivity} />
+          <ActivityList activities
+          ={props.activities} selectActivity={props.selectActivity} />
         </List>
       </Grid.Column>
       <Grid.Column width='6'>
-          {props.selectedActivity && <ActivityDetails
+          {props.selectedActivity && !props.editMode && <ActivityDetails
               activity={props.selectedActivity}
               cancelSelectActivity={props.cancelSelectActivity}
+              openForm={props.openForm}
           />}
-          <ActivityForm />
+          {props.editMode && <ActivityForm closeForm={props.closeForm} selectedActivity={props.selectedActivity} />}
       </Grid.Column>
     </Grid>
   )

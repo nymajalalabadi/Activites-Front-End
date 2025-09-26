@@ -10,6 +10,7 @@ function App() {
   
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
+  const [editMode, setEditMode] = useState(false);
 
   useEffect(() => {
     GetAllActivitiesAsync().then(data => setActivities(data));
@@ -23,15 +24,30 @@ function App() {
     setSelectedActivity(undefined);
   };
 
+  function handleFormOpen(id?: string) {
+
+    id ? selectActivity(id) : cancelSelectActivity();
+
+    setEditMode(true);
+  }
+
+  function handleFormClose() {
+    setEditMode(false);
+  }
+
+
   return (
     <>
-    <NavBar/>
+    <NavBar openForm={handleFormOpen}/>
     <Container style={{marginTop: '7em'}}>
       <ActivityDashboard
         activities={activities}
         selectedActivity={selectedActivity}
         selectActivity={selectActivity}
-        cancelSelecActivity={cancelSelectActivity}
+        cancelSelectActivity={cancelSelectActivity}
+        editMode={editMode}
+        openForm={handleFormOpen}
+        closeForm={handleFormClose}
       />
     </Container>
     </>

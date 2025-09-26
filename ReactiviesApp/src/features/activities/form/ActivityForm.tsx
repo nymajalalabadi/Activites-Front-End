@@ -1,7 +1,13 @@
 import React, { useState } from 'react'
 import { Button, Form, Segment, Header, Icon, Grid } from "semantic-ui-react";
+import { Activity } from '../../../models/Activity';
 
-const ActivityForm = () => {
+interface Props{
+  selectedActivity: Activity | undefined;
+  closeForm: () => void;
+}
+
+const ActivityForm = (props: Props) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -24,6 +30,7 @@ const ActivityForm = () => {
   };
 
   const handleCancel = () => {
+    props.closeForm();
     setFormData({
       title: '',
       description: '',
