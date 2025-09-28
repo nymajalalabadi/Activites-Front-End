@@ -5,6 +5,7 @@ import './Style.css'
 import { Activity } from '../../models/Activity';
 import NavBar from './Navbar.tsx';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard.tsx';
+import { v4 as uuid } from 'uuid';
 
 function App() {
   
@@ -38,10 +39,14 @@ function App() {
   function handleCreateOrEditActivity(activity : Activity){
     activity.id  
     ? setActivities([...activities.filter(a => a.id !== activity.id), activity])
-    : setActivities([...activities, activity]);
+    : setActivities([...activities, {...activity, id: uuid()}]);
 
     setEditMode(false);
     setSelectedActivity(activity);
+  }
+
+  function handleDeleteActivity(id: string){
+    setActivities([...activities.filter(a => a.id !== id)]);
   }
 
 
@@ -58,6 +63,7 @@ function App() {
         openForm={handleFormOpen}
         closeForm={handleFormClose}
         createOrEditActivity={handleCreateOrEditActivity}
+        deleteActivity={handleDeleteActivity}
       />
     </Container>
     </>
