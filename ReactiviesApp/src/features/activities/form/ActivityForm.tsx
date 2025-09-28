@@ -6,6 +6,7 @@ interface Props{
   selectedActivity: Activity | undefined;
   closeForm: () => void;
   createOrEditActivity:(activity : Activity) => void;
+  submitting: boolean;
 }
 
 const ActivityForm = (props: Props) => {
@@ -31,7 +32,8 @@ const ActivityForm = (props: Props) => {
   };
 
   const handleSubmit = () => {
-    props.createOrEditActivity(activity)
+    props.createOrEditActivity(activity);
+    props.submitting = true;
   };
   
 
@@ -157,7 +159,7 @@ const ActivityForm = (props: Props) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size='small' primary
+                <Button type="submit" size='small' primary disabled={props.submitting}
                   style={{
                     borderRadius: '6px',
                     padding: '8px 16px',
@@ -165,7 +167,7 @@ const ActivityForm = (props: Props) => {
                   }}
                 >
                   <Icon name='save' />
-                  Create
+                  {props.submitting ? 'Saving...' : 'Create'}
                 </Button>
               </div>
             </Grid.Column>

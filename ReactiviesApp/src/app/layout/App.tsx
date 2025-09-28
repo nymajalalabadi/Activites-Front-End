@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { GetAllActivitiesAsync } from '../../services/Activites';
+import { GetAllActivitiesAsync, CreateActivityAsync, UpdateActivityAsync, DeleteActivityAsync } from '../../services/Activites';
 import { Button, Container, Header, Icon, Menu } from 'semantic-ui-react'
 import './Style.css'
 import { Activity } from '../../models/Activity';
@@ -12,6 +12,7 @@ function App() {
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   const [editMode, setEditMode] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     GetAllActivitiesAsync().then(data => setActivities(data));
@@ -37,16 +38,34 @@ function App() {
   }
 
   function handleCreateOrEditActivity(activity : Activity){
-    activity.id  
-    ? setActivities([...activities.filter(a => a.id !== activity.id), activity])
-    : setActivities([...activities, {...activity, id: uuid()}]);
 
-    setEditMode(false);
-    setSelectedActivity(activity);
+    setSubmitting(true);
+
+    if(activity.id){
+      UpdateActivityAsync(activity).then(() => {
+        setActivities([...activities.filter(a => a.id !== activity.id), activity]);
+        setEditMode(false);
+        setSelectedActivity(activity);
+        setSubmitting(false);
+      });
+    }else{
+      activity.id = uuid();
+      CreateActivityAsync(activity).then(() => {
+        setActivities([...activities, activity]);
+        setEditMode(false);
+        setSelectedActivity(activity);
+        setSubmitting(false);
+      });
+    }
+
   }
 
   function handleDeleteActivity(id: string){
-    setActivities([...activities.filter(a => a.id !== id)]);
+    setSubmitting(true);
+    DeleteActivityAsync(id).then(() => {
+      setActivities([...activities.filter(a => a.id !== id)]);
+      setSubmitting(false);
+    });
   }
 
 
@@ -64,6 +83,7 @@ function App() {
         closeForm={handleFormClose}
         createOrEditActivity={handleCreateOrEditActivity}
         deleteActivity={handleDeleteActivity}
+        submitting={submitting}
       />
     </Container>
     </>
