@@ -6,8 +6,11 @@ import { Activity } from '../../models/Activity';
 import NavBar from './Navbar.tsx';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard.tsx';
 import { v4 as uuid } from 'uuid';
+import { useStore } from '../../stores/store.ts';
 
 function App() {
+
+  const { activityStore } = useStore();
   
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
@@ -73,6 +76,7 @@ function App() {
     <>
     <NavBar openForm={handleFormOpen}/>
     <Container style={{marginTop: '7em'}}>
+      <h2>{activityStore.title}</h2>
       <ActivityDashboard
         activities={activities}
         selectedActivity={selectedActivity}
