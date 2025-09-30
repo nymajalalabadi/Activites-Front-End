@@ -18,8 +18,10 @@ function App() {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    GetAllActivitiesAsync().then(data => setActivities(data));
-  }, []);
+
+    activityStore.loadActivities();
+
+  }, [activityStore]);
 
   const selectActivity = (id: string) => {
     setSelectedActivity(activities.find(a => a.id === id));
@@ -76,9 +78,8 @@ function App() {
     <>
     <NavBar openForm={handleFormOpen}/>
     <Container style={{marginTop: '7em'}}>
-      <h2>{activityStore.title}</h2>
       <ActivityDashboard
-        activities={activities}
+        activities={activityStore.activities}
         selectedActivity={selectedActivity}
         selectActivity={selectActivity}
         cancelSelectActivity={cancelSelectActivity}
