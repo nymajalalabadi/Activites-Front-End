@@ -1,4 +1,4 @@
-import { makeAutoObservable, observable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/Activity";
 import { GetAllActivitiesAsync } from "../services/Activites";
 
@@ -12,18 +12,37 @@ export default class ActivityStore {
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
 
-    title = 'hello from the store';
 
     loadActivities = async () => {
         try {
             const activities = await GetAllActivitiesAsync();
-            activities.forEach(activity => {
-                activity.date = activity.date.split('T')[0];
-                this.activities.push(activity);
+            runInAction(() => {
+                activities.forEach(activity => {
+                    activity.date = activity.date.split('T')[0];
+                    this.activities.push(activity);
+                });
             });
         } catch (error) {
             console.log(error);
         }
+    }
+
+
+    selectActivity = (id: string) => {
+        this.selectedActivity = this.activities.find(a => a.id === id);
+    }
+
+    cancelSelectActivity = () => {
+        this.selectedActivity = undefined;
+    }
+
+    openForm = (id?: string) => {
+        id ? this.selectActivity(id) : this.cancelSelectActivity();
+        this.editMode = true;
+    }
+
+    closeForm = () => {
+        this.editMode = false;
     }
 
 }

@@ -4,35 +4,30 @@ import { Activity } from '../../../models/Activity';
 import ActivityList from './ActivityList';
 import ActivityDetails from '../details/ActivityDetails';
 import ActivityForm from '../form/ActivityForm';
+import { useStore } from '../../../stores/store';
 
 interface Props {
     activities: Activity[];
-    selectedActivity: Activity | undefined;
-    selectActivity: (id: string) => void;
-    cancelSelectActivity: () => void;
-    editMode: boolean;
-    openForm: (id?: string) => void;
-    closeForm: () => void;
     createOrEditActivity:(activity : Activity) => void;
     deleteActivity:(id: string) => void;
     submitting: boolean;
 }
 
 const ActivityDashboard = (props: Props) => {
+
+  const { activityStore } = useStore();
+
   return (
     <Grid>
       <Grid.Column width='10'>
         <List>
-          <ActivityList activities={props.activities} selectActivity={props.selectActivity} deleteActivity={props.deleteActivity} submitting={props.submitting} />
+          <ActivityList activities={props.activities}
+          deleteActivity={props.deleteActivity} submitting={props.submitting} />
         </List>
       </Grid.Column>
       <Grid.Column width='6'>
-          {props.selectedActivity && !props.editMode && <ActivityDetails
-              activity={props.selectedActivity}
-              cancelSelectActivity={props.cancelSelectActivity}
-              openForm={props.openForm}
-          />}
-          {props.editMode && <ActivityForm closeForm={props.closeForm} selectedActivity={props.selectedActivity} createOrEditActivity={props.createOrEditActivity} submitting={props.submitting}/>}
+          {activityStore.selectedActivity && !activityStore.editMode && <ActivityDetails/>}
+          {activityStore.editMode && <ActivityForm createOrEditActivity={props.createOrEditActivity} submitting={props.submitting}/>}
       </Grid.Column>
     </Grid>
   )
