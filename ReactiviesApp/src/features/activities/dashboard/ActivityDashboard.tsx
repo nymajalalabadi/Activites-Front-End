@@ -1,5 +1,6 @@
 import React from 'react'
 import { Grid, List } from "semantic-ui-react";
+import { observer } from 'mobx-react-lite';
 import { Activity } from '../../../models/Activity';
 import ActivityList from './ActivityList';
 import ActivityDetails from '../details/ActivityDetails';
@@ -33,4 +34,4 @@ const ActivityDashboard = (props: Props) => {
   )
 }
 
-export default ActivityDashboard
+export default observer(ActivityDashboard)
