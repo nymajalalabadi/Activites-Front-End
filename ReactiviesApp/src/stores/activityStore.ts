@@ -12,9 +12,12 @@ export default class ActivityStore {
     activities: Activity[] = [];
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
+    loading = false;
+    loadingInitial = true;
 
 
     loadActivities = async () => {
+        this.loadingInitial = true;
         try {
             const activities = await GetAllActivitiesAsync();
             runInAction(() => {
@@ -25,6 +28,10 @@ export default class ActivityStore {
             });
         } catch (error) {
             console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loadingInitial = false;
+            });
         }
     }
 
@@ -48,6 +55,7 @@ export default class ActivityStore {
 
     createActivity = async (activity: Activity) => {
         activity.id = uuid();
+        this.loading = true;
         try {
             await CreateActivityAsync(activity);
 
@@ -59,10 +67,15 @@ export default class ActivityStore {
 
         } catch (error) {
             console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
         }
     }
     
     updateActivity = async (activity: Activity) => {
+        this.loading = true;
         try {
             await UpdateActivityAsync(activity);
 
@@ -74,21 +87,30 @@ export default class ActivityStore {
 
         } catch (error) {
             console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
         }
     }
     
     deleteActivity = async (id: string) => {
+        this.loading = true;
         try {
             await DeleteActivityAsync(id);
 
             runInAction(() => {
-                this.activities = this.activities.filter(a => a.id !== id);
-                this.selectedActivity = undefined;
+                this.activities = [...this.activities.filter(a => a.id !== id)];
+                if(this.selectedActivity?.id === id) this.cancelSelectActivity();
                 this.editMode = false;
             });
 
         } catch (error) {
             console.log(error);
+        } finally {
+            runInAction(() => {
+                this.loading = false;
+            });
         }
     }
 

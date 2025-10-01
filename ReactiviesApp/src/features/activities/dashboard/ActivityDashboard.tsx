@@ -9,7 +9,6 @@ import { useStore } from '../../../stores/store';
 
 interface Props {
     activities: Activity[];
-    deleteActivity:(id: string) => void;
     submitting: boolean;
 }
 
@@ -21,8 +20,7 @@ const ActivityDashboard = (props: Props) => {
     <Grid>
       <Grid.Column width='10'>
         <List>
-          <ActivityList activities={props.activities}
-          deleteActivity={props.deleteActivity} submitting={props.submitting} />
+          <ActivityList activities={props.activities} submitting={props.submitting} />
         </List>
       </Grid.Column>
       <Grid.Column width='6'>

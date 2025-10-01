@@ -5,7 +5,6 @@ import { useStore } from '../../../stores/store';
 
 interface Props {
     activities: Activity[];
-    deleteActivity:(id:string) => void;
     submitting: boolean;
 }
 
@@ -16,7 +15,7 @@ const ActivityList = (props: Props) => {
 
     const handleDeleteActivity = (event: React.MouseEvent<HTMLButtonElement>, id: string) => {
         setTarget(event.currentTarget.name);
-        props.deleteActivity(id);
+        activityStore.deleteActivity(id);
     }
 
   return (
@@ -32,7 +31,7 @@ const ActivityList = (props: Props) => {
                                 <div>{activity.city} , {activity.venue}</div>
                             </ItemDescription>
                             <ItemExtra>
-                                <Button onClick={()=>{activityStore.selectActivity(activity.id)}} floated="right" content='View' color="blue" />
+                                <Button onClick={()=>{activityStore.selectActivity(activity.id)}} floated="right" content='View' color="blue" loading={activityStore.loading} />
                                 <Button name={activity.id} onClick={(event) => handleDeleteActivity(event, activity.id)} floated="right" content='Delete' 
                                 color="red" loading={props.submitting && target === activity.id} />
                                 <Label basic content={activity.category} />
