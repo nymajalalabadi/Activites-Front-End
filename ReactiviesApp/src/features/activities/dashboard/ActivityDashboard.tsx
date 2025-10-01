@@ -9,7 +9,6 @@ import { useStore } from '../../../stores/store';
 
 interface Props {
     activities: Activity[];
-    createOrEditActivity:(activity : Activity) => void;
     deleteActivity:(id: string) => void;
     submitting: boolean;
 }
@@ -28,7 +27,7 @@ const ActivityDashboard = (props: Props) => {
       </Grid.Column>
       <Grid.Column width='6'>
           {activityStore.selectedActivity && !activityStore.editMode && <ActivityDetails/>}
-          {activityStore.editMode && <ActivityForm createOrEditActivity={props.createOrEditActivity} submitting={props.submitting}/>}
+          {activityStore.editMode && <ActivityForm submitting={props.submitting}/>}
       </Grid.Column>
     </Grid>
   )

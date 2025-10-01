@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/Activity";
-import { GetAllActivitiesAsync } from "../services/Activites";
+import { v4 as uuid } from 'uuid';
+import { CreateActivityAsync, DeleteActivityAsync, GetAllActivitiesAsync, UpdateActivityAsync } from "../services/Activites";
 
 export default class ActivityStore {
 
@@ -43,6 +44,52 @@ export default class ActivityStore {
 
     closeForm = () => {
         this.editMode = false;
+    }
+
+    createActivity = async (activity: Activity) => {
+        activity.id = uuid();
+        try {
+            await CreateActivityAsync(activity);
+
+            runInAction(() => {
+                this.activities.push(activity);
+                this.selectedActivity = activity;
+                this.editMode = false;
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    updateActivity = async (activity: Activity) => {
+        try {
+            await UpdateActivityAsync(activity);
+
+            runInAction(() => {
+                this.activities = [...this.activities.filter(a => a.id !== activity.id), activity];
+                this.selectedActivity = activity;
+                this.editMode = false;
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    deleteActivity = async (id: string) => {
+        try {
+            await DeleteActivityAsync(id);
+
+            runInAction(() => {
+                this.activities = this.activities.filter(a => a.id !== id);
+                this.selectedActivity = undefined;
+                this.editMode = false;
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }

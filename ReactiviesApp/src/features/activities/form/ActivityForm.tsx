@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { Button, Form, Segment, Header, Icon, Grid } from "semantic-ui-react";
-import { Activity } from '../../../models/Activity';
 import { useStore } from '../../../stores/store';
 
 interface Props{
-  createOrEditActivity:(activity : Activity) => void;
   submitting: boolean;
 }
 
@@ -33,7 +31,7 @@ const ActivityForm = (props: Props) => {
   };
 
   const handleSubmit = () => {
-    props.createOrEditActivity(activity);
+    activity.id ? activityStore.updateActivity(activity) : activityStore.createActivity(activity);
     props.submitting = true;
   };
   
