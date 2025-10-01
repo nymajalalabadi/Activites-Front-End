@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Container } from 'semantic-ui-react'
-import './Style.css'
+import React, { useEffect, useState } from 'react';
+import { Container } from 'semantic-ui-react';
+import './Style.css' ;
 import NavBar from './Navbar.tsx';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard.tsx';
 import { useStore } from '../../stores/store.ts';
