@@ -4,7 +4,6 @@ import { Activity } from '../../../models/Activity';
 import { useStore } from '../../../stores/store';
 
 interface Props {
-    activities: Activity[];
     submitting: boolean;
 }
 
@@ -21,7 +20,7 @@ const ActivityList = (props: Props) => {
   return (
     <Segment>
             <Item.Group divided>
-                {props.activities.map(activity => (
+                {activityStore.activities.map(activity => (
                     <Item key={activity.id}>
                         <ItemContent>
                             <ItemHeader as='a'>{activity.title}</ItemHeader>
