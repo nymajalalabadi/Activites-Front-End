@@ -20,7 +20,7 @@ const ActivityList = (props: Props) => {
   return (
     <Segment>
             <Item.Group divided>
-                {activityStore.activities.map(activity => (
+                {activityStore.activitiesByDate.map(activity => (
                     <Item key={activity.id}>
                         <ItemContent>
                             <ItemHeader as='a'>{activity.title}</ItemHeader>
