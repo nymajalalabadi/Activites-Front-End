@@ -9,7 +9,6 @@ export default class ActivityStore {
         makeAutoObservable(this);
     }
 
-    //activities: Activity[] = [];
     activityRegistry = new Map<string, Activity>();
     selectedActivity: Activity | undefined = undefined;
     editMode = false;
