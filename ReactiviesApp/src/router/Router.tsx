@@ -21,6 +21,10 @@ export const routes : RouteObject[] = [
                 element: <ActivityDashboard submitting={false} />,
             },
             {
+                path: "activities/:id",
+                element: <ActivityDetails />,
+            },
+            {
                 path: "createActivity",
                 element: <ActivityForm submitting={false} />,
             },

@@ -1,11 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Card, Image } from "semantic-ui-react";
 import { useStore } from '../../../stores/store';
+import { Link, useParams } from 'react-router-dom';    
 
 
 const ActivityDetails = () => {
 
   const { activityStore } = useStore();
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    if(id) {
+        activityStore.loadActivity(id);
+    }
+  }, [id, activityStore.loadActivity]);
 
   if(activityStore.selectedActivity === undefined) return <></>;
 
@@ -26,8 +35,8 @@ const ActivityDetails = () => {
         </Card.Content>
         <Card.Content extra> 
             <Button.Group widths='2'>
-                <Button basic color="blue" content='Edit' onClick={()=>activityStore.openForm(activityStore.selectedActivity?.id)} />
-                <Button onClick={activityStore.cancelSelectActivity} basic color="grey" content='Cancel' />
+                <Button basic color="blue" content='Edit' as={Link} to={`/activities/${activityStore.selectedActivity?.id}`} />
+                <Button  basic color="grey" content='Cancel' as={Link} to={`/activities`} />
             </Button.Group>
         </Card.Content>
     </Card>
