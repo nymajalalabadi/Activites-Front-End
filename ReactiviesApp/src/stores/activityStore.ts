@@ -47,11 +47,13 @@ export default class ActivityStore {
             const activity = this.getActivity(id);
             if(activity) {
                 this.selectedActivity = activity;
+                return activity;
             } else {
                 try {
                     const activity = await GetActivityAsync(id);
                     this.setActivity(activity);
                     this.selectedActivity = activity;
+                    return activity;
                 } catch (error) {
                     console.log(error);
                 }

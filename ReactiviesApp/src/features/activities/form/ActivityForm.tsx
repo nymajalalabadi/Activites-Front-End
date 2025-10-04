@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Form, Segment, Header, Icon, Grid } from "semantic-ui-react";
 import { useStore } from '../../../stores/store';
+import { useParams } from 'react-router-dom';
+import { Activity } from '../../../models/Activity';
 
 interface Props{
   submitting: boolean;
@@ -9,8 +11,10 @@ interface Props{
 const ActivityForm = (props: Props) => {
 
   const { activityStore } = useStore();
+  const { id } = useParams();
+  const [submitting, setSubmitting] = useState(false);
 
-  const initialState = activityStore.selectedActivity ?? {
+  const[activity, setActivity] = useState<Activity>({
     id: '',
     title: '',
     category: '',
@@ -18,9 +22,17 @@ const ActivityForm = (props: Props) => {
     description: '',
     city: '',
     venue: ''
-  }
+  });
 
-  const [activity, setActivity] = useState(initialState);
+  useEffect(() => {
+    if(id) {
+      activityStore.loadActivity(id).then(activity => {
+        if(activity) {
+          setActivity(activity);
+        }
+      });
+    }
+  }, [id, activityStore.loadActivity]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -30,14 +42,24 @@ const ActivityForm = (props: Props) => {
     }));
   };
 
-  const handleSubmit = () => {
-    activity.id ? activityStore.updateActivity(activity) : activityStore.createActivity(activity);
-    props.submitting = true;
+  const handleSubmit = async () => {
+    setSubmitting(true);
+    try {
+      if (activity.id) {
+        await activityStore.updateActivity(activity);
+      } else {
+        await activityStore.createActivity(activity);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
   };
   
 
   const handleCancel = () => {
-    activityStore.closeForm();
+    activityStore.editMode = false;
     setActivity({
       id: '',
       title: '',
@@ -63,8 +85,8 @@ const ActivityForm = (props: Props) => {
         textAlign: 'center',
         fontSize: '1.2em'
       }}>
-        <Icon name='plus circle' />
-        Create Activity
+        <Icon name={activity.id ? 'edit' : 'plus circle'} />
+        {activity.id ? 'Edit Activity' : 'Create Activity'}
       </Header>
 
       <Form onSubmit={handleSubmit} autoComplete='off'>
@@ -158,7 +180,7 @@ const ActivityForm = (props: Props) => {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size='small' primary disabled={props.submitting}
+                <Button type="submit" size='small' primary disabled={submitting}
                   style={{
                     borderRadius: '6px',
                     padding: '8px 16px',
@@ -166,7 +188,7 @@ const ActivityForm = (props: Props) => {
                   }}
                 >
                   <Icon name='save' />
-                  {props.submitting ? 'Saving...' : 'Create'}
+                  {submitting ? 'Saving...' : activity.id ? 'Update' : 'Create'}
                 </Button>
               </div>
             </Grid.Column>

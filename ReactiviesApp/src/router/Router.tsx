@@ -28,8 +28,12 @@ export const routes : RouteObject[] = [
                 path: "createActivity",
                 element: <ActivityForm submitting={false} />,
             },
+            {
+                path: "manage/:id",
+                element: <ActivityForm submitting={false} />,
+            },
         ],
     },
-];
+]
 
-export const router = createBrowserRouter(routes);
+export const router = createBrowserRouter(routes)
