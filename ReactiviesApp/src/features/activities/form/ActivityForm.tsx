@@ -3,6 +3,8 @@ import { Button, Form, Segment, Header, Icon, Grid } from "semantic-ui-react";
 import { useStore } from '../../../stores/store';
 import { useParams } from 'react-router-dom';
 import { Activity } from '../../../models/Activity';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuid } from 'uuid';
 
 interface Props{
   submitting: boolean;
@@ -13,6 +15,7 @@ const ActivityForm = (props: Props) => {
   const { activityStore } = useStore();
   const { id } = useParams();
   const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const[activity, setActivity] = useState<Activity>({
     id: '',
@@ -47,8 +50,12 @@ const ActivityForm = (props: Props) => {
     try {
       if (activity.id) {
         await activityStore.updateActivity(activity);
+        navigate(`/activities/${activity.id}`);
+
       } else {
+        activity.id = uuid();
         await activityStore.createActivity(activity);
+        navigate(`/activities/${activity.id}`);
       }
     } catch (error) {
       console.log(error);
