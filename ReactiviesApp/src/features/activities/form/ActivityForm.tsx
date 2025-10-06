@@ -45,8 +45,9 @@ const ActivityForm = (props: Props) => {
     }));
   };
 
-  const handleSubmit = async () => {
-    setSubmitting(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    setSubmitting(true);  
     try {
       if (activity.id) {
         await activityStore.updateActivity(activity);
