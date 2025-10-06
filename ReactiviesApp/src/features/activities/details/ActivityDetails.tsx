@@ -35,7 +35,7 @@ const ActivityDetails = () => {
         </Card.Content>
         <Card.Content extra> 
             <Button.Group widths='2'>
-                <Button basic color="blue" content='Edit' as={Link} to={`/activities/${activityStore.selectedActivity?.id}`} />
+                <Button basic color="blue" content='Edit' as={Link} to={`/manage/${activityStore.selectedActivity?.id}`} />
                 <Button  basic color="grey" content='Cancel' as={Link} to={`/activities`} />
             </Button.Group>
         </Card.Content>
