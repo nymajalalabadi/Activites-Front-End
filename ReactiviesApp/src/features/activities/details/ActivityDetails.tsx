@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Card, Image } from "semantic-ui-react";
+import { Button, Card } from "semantic-ui-react";
 import { useStore } from '../../../stores/store';
 import { Link, useParams } from 'react-router-dom';    
 
@@ -20,7 +20,7 @@ const ActivityDetails = () => {
 
   return (
     <Card>
-        <Image src={`/assets/categoryImages/${activityStore.selectedActivity?.category}.jpg`} />
+        <img src={`/assets/categoryImages/${activityStore.selectedActivity?.category}.jpg`} />
         <Card.Content>
             <Card.Header>{activityStore.selectedActivity?.title}</Card.Header>
             <Card.Meta>
@@ -35,7 +35,7 @@ const ActivityDetails = () => {
         </Card.Content>
         <Card.Content extra> 
             <Button.Group widths='2'>
-                <Button basic color="blue" content='Edit' as={Link} to={`/manage/${activityStore.selectedActivity?.id}`} />
+                <Button basic color="blue" content='Edit' as={Link} to={`/activities/${activityStore.selectedActivity?.id}`} />
                 <Button  basic color="grey" content='Cancel' as={Link} to={`/activities`} />
             </Button.Group>
         </Card.Content>
