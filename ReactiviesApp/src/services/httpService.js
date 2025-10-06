@@ -10,11 +10,11 @@ const app = axios.create({
 const responseBody = (response) => response.data;
 
 const requests = {
-    get: (url) => app.get(url).then(responseBody),
-    post: (url, body) => app.post(url, body).then(responseBody),
-    put: (url, body) => app.put(url, body).then(responseBody),
-    patch: (url, body) => app.patch(url, body).then(responseBody),
-    delete: (url) => app.delete(url).then(responseBody),
+  get: (url) => app.get(url).then(responseBody),
+  post: (url, body) => app.post(url, body).then(responseBody),
+  put: (url, body) => app.put(url, body).then(responseBody),
+  patch: (url, body) => app.patch(url, body).then(responseBody),
+  delete: (url) => app.delete(url).then(responseBody),
 };
 
 const http = {

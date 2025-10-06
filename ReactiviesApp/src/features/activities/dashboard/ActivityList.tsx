@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { Button, Item, ItemContent, ItemDescription, ItemExtra, ItemGroup, ItemHeader, ItemMeta, Label, Segment } from "semantic-ui-react";
-import { Activity } from '../../../models/Activity';
 import { useStore } from '../../../stores/store';
 import { Link } from 'react-router-dom';
 
