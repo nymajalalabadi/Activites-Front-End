@@ -1,30 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
 import './Style.css' ;
 import NavBar from './Navbar.tsx';
-import { useStore } from '../../stores/store.ts';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import HomePage from '../../features/home/HomePage';
 
 function App() {
 
-  const { activityStore } = useStore();
-
+  const location = useLocation();
 
   useEffect(() => {
-
-    activityStore.loadActivities();
-
-  }, [activityStore]);
-
-
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
 
   return (
-    <>
-    <NavBar/>
-    <Container style={{marginTop: '7em'}}>
-      <Outlet />
-    </Container>
-    </>
+    <div className="app-background">
+      {location.pathname === '/' ? <HomePage/> : (
+        <>
+          <NavBar/>
+          <Container fluid className="page-container">
+            <Outlet />
+          </Container>
+        </>
+      )}
+    </div>
   )
 }
 
