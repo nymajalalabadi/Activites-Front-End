@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, Card } from "semantic-ui-react";
+import { observer } from 'mobx-react-lite';
 import { useStore } from '../../../stores/store';
 import { Link, useParams } from 'react-router-dom';    
 
@@ -16,7 +17,13 @@ const ActivityDetails = () => {
     }
   }, [id, activityStore.loadActivity]);
 
-  if(activityStore.selectedActivity === undefined) return <></>;
+  if(activityStore.loadingInitial) {
+    return <div style={{ textAlign: 'center', padding: '50px' }}>Loading activity details...</div>;
+  }
+
+  if(activityStore.selectedActivity === undefined || activityStore.selectedActivity.id !== id) {
+    return <div style={{ textAlign: 'center', padding: '50px' }}>Activity not found</div>;
+  }
 
   return (
     <Card>
@@ -44,4 +51,4 @@ const ActivityDetails = () => {
   )
 }
 
-export default ActivityDetails
+export default observer(ActivityDetails)

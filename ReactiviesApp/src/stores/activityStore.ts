@@ -45,22 +45,37 @@ export default class ActivityStore {
     loadActivity = async (id: string) => {
         this.loadingInitial = true;
         try {
+            // Reset selectedActivity when loading a different activity
+            if (this.selectedActivity?.id !== id) {
+                this.selectedActivity = undefined;
+            }
+
             const activity = this.getActivity(id);
             if(activity) {
-                this.selectedActivity = activity;
+                runInAction(() => {
+                    this.selectedActivity = activity;
+                });
                 return activity;
             } else {
                 try {
                     const activity = await GetActivityAsync(id);
-                    this.setActivity(activity);
-                    this.selectedActivity = activity;
+                    runInAction(() => {
+                        this.setActivity(activity);
+                        this.selectedActivity = activity;
+                    });
                     return activity;
                 } catch (error) {
                     console.log(error);
+                    runInAction(() => {
+                        this.selectedActivity = undefined;
+                    });
                 }
             }
         } catch (error) {
             console.log(error);
+            runInAction(() => {
+                this.selectedActivity = undefined;
+            });
         } finally {
             runInAction(() => {
                 this.loadingInitial = false;
