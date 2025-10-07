@@ -16,7 +16,7 @@ export default class ActivityStore {
     loadingInitial = true;
 
     get activitiesByDate() {
-        return Array.from(this.activityRegistry.values()).sort((a, b) => 
+        return Array.from(this.activityRegistry.values()).sort((a, b) =>
             Date.parse(a.date) - Date.parse(b.date));
     }
 
@@ -74,9 +74,9 @@ export default class ActivityStore {
     }
 
     private setActivity = (activity: Activity) => {
-        if (activity.date) {
+        if (activity.date && typeof activity.date === 'string') {
             activity.date = activity.date.split('T')[0];
-          }
+        }
         this.activityRegistry.set(activity.id, activity);
     }
 

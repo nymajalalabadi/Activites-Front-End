@@ -4,7 +4,7 @@ const BASE_URL = 'https://localhost:7170/api';
 
 const app = axios.create({
     baseURL: BASE_URL,
-    withCredentials:true, //http-only => cookie
+    withCredentials: true, //http-only => cookie
 });
 
 const responseBody = (response) => response.data;
