@@ -107,7 +107,7 @@ export default class ActivityStore {
     updateActivity = async (activity: Activity) => {
         this.loading = true;
         try {
-            await UpdateActivityAsync(activity);
+            await UpdateActivityAsync(activity, activity.id);
 
             runInAction(() => {
                 this.activityRegistry.set(activity.id, activity);

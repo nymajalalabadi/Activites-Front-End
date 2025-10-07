@@ -109,6 +109,15 @@ const ActivityList = (props: Props) => {
                                             View
                                         </Button>
                                         <Button
+                                            as={Link}
+                                            to={`/manage/${activity.id}`}
+                                            color="teal"
+                                            size="small"
+                                            style={{ marginRight: '8px' }}
+                                        >
+                                            Edit
+                                        </Button>
+                                        <Button
                                             name={activity.id}
                                             onClick={(event) => handleDeleteActivity(event, activity.id)}
                                             color="red"

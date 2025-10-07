@@ -12,8 +12,8 @@ export function CreateActivityAsync(activity) {
     return http.post("Activites/CreateActivityAsync", activity).then(({data}) => data);
 }
 
-export function UpdateActivityAsync(activity) {
-    return http.put("Activites/UpdateActivityAsync", activity).then(({data}) => data);
+export function UpdateActivityAsync(activity, id) {
+    return http.put(`Activites/UpdateActivityAsync/${id}`, activity).then(({data}) => data);
 }
 
 export function DeleteActivityAsync(id) {
