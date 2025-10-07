@@ -25,9 +25,11 @@ export default class ActivityStore {
         try {
             const activities = await GetAllActivitiesAsync();
             runInAction(() => {
-                activities.forEach(activity => {
-                    this.setActivity(activity);
-                });
+                if (activities && Array.isArray(activities)) {
+                    activities.forEach(activity => {
+                        this.setActivity(activity);
+                    });
+                }
             });
         } catch (error) {
             console.log(error);
