@@ -3,6 +3,7 @@ import { Grid, List } from "semantic-ui-react";
 import { observer } from 'mobx-react-lite';
 import ActivityList from './ActivityList';
 import { useStore } from '../../../stores/store';
+import ActivityFilter from './ActivityFilter';
 
 interface Props {
     submitting: boolean;
@@ -27,7 +28,7 @@ const ActivityDashboard = (props: Props) => {
         </List>
       </Grid.Column>
       <Grid.Column width='6'>
-          <h2>Activity Filters</h2>
+          <ActivityFilter />
       </Grid.Column>
     </Grid>
   )
