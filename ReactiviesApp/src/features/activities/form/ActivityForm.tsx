@@ -4,6 +4,7 @@ import { useStore } from '../../../stores/store';
 import { useParams } from 'react-router-dom';
 import { Activity } from '../../../models/Activity';
 import { useNavigate } from 'react-router-dom';
+import { Formik, Form as FormikForm, Field } from 'formik';
 import { v4 as uuid } from 'uuid';
 
 interface Props{
@@ -37,26 +38,16 @@ const ActivityForm = (props: Props) => {
     }
   }, [id, activityStore.loadActivity]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setActivity(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-    setSubmitting(true);  
+  const handleSubmit = async (values: Activity) => {
+    setSubmitting(true);
     try {
-      if (activity.id) {
-        await activityStore.updateActivity(activity);
-        navigate(`/activities/${activity.id}`);
-
+      if (values.id) {
+        await activityStore.updateActivity(values);
+        navigate(`/activities/${values.id}`);
       } else {
-        activity.id = uuid();
-        await activityStore.createActivity(activity);
-        navigate(`/activities/${activity.id}`);
+        const newActivity = { ...values, id: uuid() };
+        await activityStore.createActivity(newActivity);
+        navigate(`/activities/${newActivity.id}`);
       }
     } catch (error) {
       console.log(error);
@@ -97,112 +88,161 @@ const ActivityForm = (props: Props) => {
         {activity.id ? 'Edit Activity' : 'Create Activity'}
       </Header>
 
-      <Form onSubmit={handleSubmit} autoComplete='off'>
-        <Grid columns={2} stackable>
-          <Grid.Row>
-            <Grid.Column width={8}>
-              <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input name='title' placeholder='Activity Title' value={activity.title} onChange={handleInputChange} icon='tag' iconPosition='left'
-                  size='small' required style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
+      <Formik
+        initialValues={activity}
+        onSubmit={handleSubmit}
+        enableReinitialize={true}
+      >
+        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+          <FormikForm onSubmit={handleSubmit} autoComplete='off'>
+            <Grid columns={2} stackable>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <Form.Field style={{ marginBottom: '12px' }}>
+                    <Form.Input
+                      name='title'
+                      placeholder='Activity Title'
+                      value={values.title}
+                      onChange={handleChange}
+                      icon='tag'
+                      iconPosition='left'
+                      size='small'
+                      required
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
 
-            <Grid.Column width={8}>
-              <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input name='category'  placeholder='Category' value={activity.category} onChange={handleInputChange} icon='list'
-                  iconPosition='left' size='small' style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
-          </Grid.Row>
+                <Grid.Column width={8}>
+                  <Form.Field style={{ marginBottom: '12px' }}>
+                    <Form.Input
+                      name='category'
+                      placeholder='Category'
+                      value={values.category}
+                      onChange={handleChange}
+                      icon='list'
+                      iconPosition='left'
+                      size='small'
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
 
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.TextArea name='description' placeholder='Activity Description' value={activity.description} onChange={handleInputChange}
-                  rows={2} style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5',
-                    resize: 'none'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
-          </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Form.Field style={{ marginBottom: '12px' }}>
+                    <Form.TextArea
+                      name='description'
+                      placeholder='Activity Description'
+                      value={values.description}
+                      onChange={handleChange}
+                      rows={2}
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5',
+                        resize: 'none'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
 
-          <Grid.Row>
-            <Grid.Column width={8}>
-              <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input name='date' type='datetime-local' value={activity.date} onChange={handleInputChange}
-                  icon='calendar' iconPosition='left' size='small'  style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
+              <Grid.Row>
+                <Grid.Column width={8}>
+                  <Form.Field style={{ marginBottom: '12px' }}>
+                    <Form.Input
+                      name='date'
+                      type='datetime-local'
+                      value={values.date}
+                      onChange={handleChange}
+                      icon='calendar'
+                      iconPosition='left'
+                      size='small'
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
 
-            <Grid.Column width={8}>
-              <Form.Field style={{ marginBottom: '12px' }}>
-                <Form.Input name='city' placeholder='City' value={activity.city} onChange={handleInputChange} icon='building'
-                  iconPosition='left' size='small' style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
-          </Grid.Row>
+                <Grid.Column width={8}>
+                  <Form.Field style={{ marginBottom: '12px' }}>
+                    <Form.Input
+                      name='city'
+                      placeholder='City'
+                      value={values.city}
+                      onChange={handleChange}
+                      icon='building'
+                      iconPosition='left'
+                      size='small'
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
 
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <Form.Field style={{ marginBottom: '15px' }}>
-                <Form.Input name='venue' placeholder='Venue Address' value={activity.venue} onChange={handleInputChange} icon='map pin'
-                  iconPosition='left' size='small' style={{
-                    borderRadius: '6px',
-                    border: '1px solid #d4d4d5'
-                  }}
-                />
-              </Form.Field>
-            </Grid.Column>
-          </Grid.Row>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <Form.Field style={{ marginBottom: '15px' }}>
+                    <Form.Input
+                      name='venue'
+                      placeholder='Venue Address'
+                      value={values.venue}
+                      onChange={handleChange}
+                      icon='map pin'
+                      iconPosition='left'
+                      size='small'
+                      style={{
+                        borderRadius: '6px',
+                        border: '1px solid #d4d4d5'
+                      }}
+                    />
+                  </Form.Field>
+                </Grid.Column>
+              </Grid.Row>
 
-          <Grid.Row>
-            <Grid.Column width={16}>
-              <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
-                <Button type="button" onClick={handleCancel} size='small'
-                  style={{
-                    borderRadius: '6px',
-                    backgroundColor: '#f8f9fa',
-                    color: '#6c757d',
-                    border: '1px solid #e9ecef',
-                    padding: '8px 16px'
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" size='small' primary disabled={submitting}
-                  style={{
-                    borderRadius: '6px',
-                    padding: '8px 16px',
-                    backgroundColor: '#2185d0'
-                  }}
-                >
-                  <Icon name='save' />
-                  {submitting ? 'Saving...' : activity.id ? 'Update' : 'Create'}
-                </Button>
-              </div>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Form>
+              <Grid.Row>
+                <Grid.Column width={16}>
+                  <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                    <Button type="button" onClick={handleCancel} size='small'
+                      style={{
+                        borderRadius: '6px',
+                        backgroundColor: '#f8f9fa',
+                        color: '#6c757d',
+                        border: '1px solid #e9ecef',
+                        padding: '8px 16px'
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button type="submit" size='small' primary disabled={submitting}
+                      style={{
+                        borderRadius: '6px',
+                        padding: '8px 16px',
+                        backgroundColor: '#2185d0'
+                      }}
+                    >
+                      <Icon name='save' />
+                      {submitting ? 'Saving...' : activity.id ? 'Update' : 'Create'}
+                    </Button>
+                  </div>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </FormikForm>
+        )}
+      </Formik>
     </Segment>
   )
 }
