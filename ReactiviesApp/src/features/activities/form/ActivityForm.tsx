@@ -4,12 +4,31 @@ import { useStore } from '../../../stores/store';
 import { useParams } from 'react-router-dom';
 import { Activity } from '../../../models/Activity';
 import { useNavigate } from 'react-router-dom';
-import { Formik, Form as FormikForm, Field } from 'formik';
+import { Formik, Form as FormikForm, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import { v4 as uuid } from 'uuid';
 
 interface Props{
   submitting: boolean;
 }
+
+// Validation schema
+const validationSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Title is required')
+    .min(3, 'Title must be at least 3 characters'),
+  category: Yup.string()
+    .required('Category is required'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(10, 'Description must be at least 10 characters'),
+  date: Yup.string()
+    .required('Date is required'),
+  city: Yup.string()
+    .required('City is required'),
+  venue: Yup.string()
+    .required('Venue is required')
+});
 
 const ActivityForm = (props: Props) => {
 
@@ -71,7 +90,18 @@ const ActivityForm = (props: Props) => {
   };
 
   return (
-    <Segment style={{
+    <>
+      <style>
+        {`
+          .field-error {
+            color: #e74c3c;
+            font-size: 0.8rem;
+            margin-top: 4px;
+            font-weight: 500;
+          }
+        `}
+      </style>
+      <Segment style={{
       borderRadius: '10px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
       border: '1px solid #e8e8e8',
@@ -90,10 +120,11 @@ const ActivityForm = (props: Props) => {
 
       <Formik
         initialValues={activity}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({ values, handleChange, handleSubmit }) => (
+        {({ handleSubmit }) => (
           <FormikForm onSubmit={handleSubmit} autoComplete='off'>
             <Grid columns={2} stackable>
               <Grid.Row>
@@ -102,7 +133,7 @@ const ActivityForm = (props: Props) => {
                     <Form.Input
                       as={Field}
                       name='title'
-                      placeholder='Activity Title'
+                      placeholder='Enter activity title'
                       icon='tag'
                       iconPosition='left'
                       size='small'
@@ -112,6 +143,7 @@ const ActivityForm = (props: Props) => {
                         border: '1px solid #d4d4d5'
                       }}
                     />
+                    <ErrorMessage name="title" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
 
@@ -120,7 +152,7 @@ const ActivityForm = (props: Props) => {
                     <Form.Input
                       as={Field}
                       name='category'
-                      placeholder='Category'
+                      placeholder='Enter category'
                       icon='list'
                       iconPosition='left'
                       size='small'
@@ -129,6 +161,7 @@ const ActivityForm = (props: Props) => {
                         border: '1px solid #d4d4d5'
                       }}
                     />
+                    <ErrorMessage name="category" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
               </Grid.Row>
@@ -139,7 +172,7 @@ const ActivityForm = (props: Props) => {
                     <Form.TextArea
                       as={Field}
                       name='description'
-                      placeholder='Activity Description'
+                      placeholder='Enter activity description'
                       rows={2}
                       style={{
                         borderRadius: '6px',
@@ -147,6 +180,7 @@ const ActivityForm = (props: Props) => {
                         resize: 'none'
                       }}
                     />
+                    <ErrorMessage name="description" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
               </Grid.Row>
@@ -166,6 +200,7 @@ const ActivityForm = (props: Props) => {
                         border: '1px solid #d4d4d5'
                       }}
                     />
+                    <ErrorMessage name="date" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
 
@@ -174,7 +209,7 @@ const ActivityForm = (props: Props) => {
                     <Form.Input
                       as={Field}
                       name='city'
-                      placeholder='City'
+                      placeholder='Enter city'
                       icon='building'
                       iconPosition='left'
                       size='small'
@@ -183,6 +218,7 @@ const ActivityForm = (props: Props) => {
                         border: '1px solid #d4d4d5'
                       }}
                     />
+                    <ErrorMessage name="city" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
               </Grid.Row>
@@ -193,7 +229,7 @@ const ActivityForm = (props: Props) => {
                     <Form.Input
                       as={Field}
                       name='venue'
-                      placeholder='Venue Address'
+                      placeholder='Enter venue address'
                       icon='map pin'
                       iconPosition='left'
                       size='small'
@@ -202,6 +238,7 @@ const ActivityForm = (props: Props) => {
                         border: '1px solid #d4d4d5'
                       }}
                     />
+                    <ErrorMessage name="venue" component="div" className="field-error" />
                   </Form.Field>
                 </Grid.Column>
               </Grid.Row>
@@ -238,6 +275,7 @@ const ActivityForm = (props: Props) => {
         )}
       </Formik>
     </Segment>
+    </>
   )
 }
 
