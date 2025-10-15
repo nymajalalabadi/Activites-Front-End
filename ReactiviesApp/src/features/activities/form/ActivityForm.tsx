@@ -93,17 +93,16 @@ const ActivityForm = (props: Props) => {
         onSubmit={handleSubmit}
         enableReinitialize={true}
       >
-        {({ values, handleChange, handleSubmit, setFieldValue }) => (
+        {({ values, handleChange, handleSubmit }) => (
           <FormikForm onSubmit={handleSubmit} autoComplete='off'>
             <Grid columns={2} stackable>
               <Grid.Row>
                 <Grid.Column width={8}>
                   <Form.Field style={{ marginBottom: '12px' }}>
                     <Form.Input
+                      as={Field}
                       name='title'
                       placeholder='Activity Title'
-                      value={values.title}
-                      onChange={handleChange}
                       icon='tag'
                       iconPosition='left'
                       size='small'
@@ -119,10 +118,9 @@ const ActivityForm = (props: Props) => {
                 <Grid.Column width={8}>
                   <Form.Field style={{ marginBottom: '12px' }}>
                     <Form.Input
+                      as={Field}
                       name='category'
                       placeholder='Category'
-                      value={values.category}
-                      onChange={handleChange}
                       icon='list'
                       iconPosition='left'
                       size='small'
@@ -139,10 +137,9 @@ const ActivityForm = (props: Props) => {
                 <Grid.Column width={16}>
                   <Form.Field style={{ marginBottom: '12px' }}>
                     <Form.TextArea
+                      as={Field}
                       name='description'
                       placeholder='Activity Description'
-                      value={values.description}
-                      onChange={handleChange}
                       rows={2}
                       style={{
                         borderRadius: '6px',
@@ -158,10 +155,9 @@ const ActivityForm = (props: Props) => {
                 <Grid.Column width={8}>
                   <Form.Field style={{ marginBottom: '12px' }}>
                     <Form.Input
+                      as={Field}
                       name='date'
                       type='datetime-local'
-                      value={values.date}
-                      onChange={handleChange}
                       icon='calendar'
                       iconPosition='left'
                       size='small'
@@ -176,10 +172,9 @@ const ActivityForm = (props: Props) => {
                 <Grid.Column width={8}>
                   <Form.Field style={{ marginBottom: '12px' }}>
                     <Form.Input
+                      as={Field}
                       name='city'
                       placeholder='City'
-                      value={values.city}
-                      onChange={handleChange}
                       icon='building'
                       iconPosition='left'
                       size='small'
@@ -196,10 +191,9 @@ const ActivityForm = (props: Props) => {
                 <Grid.Column width={16}>
                   <Form.Field style={{ marginBottom: '15px' }}>
                     <Form.Input
+                      as={Field}
                       name='venue'
                       placeholder='Venue Address'
-                      value={values.venue}
-                      onChange={handleChange}
                       icon='map pin'
                       iconPosition='left'
                       size='small'
