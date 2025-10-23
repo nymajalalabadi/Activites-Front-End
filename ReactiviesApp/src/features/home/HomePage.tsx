@@ -30,12 +30,12 @@ const HomePage = () => {
           <div className="button-section">
             <Button
               as={Link}
-              to='/activities'
+              to='/login'
               size='massive'
               className="cta-button"
             >
               <Icon name='rocket' style={{ marginRight: '0.5em' }} />
-              Explore Activities
+              Login
             </Button>
           </div>
         </div>

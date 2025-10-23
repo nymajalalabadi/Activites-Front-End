@@ -5,6 +5,7 @@ import HomePage from "../features/home/HomePage";
 import ActivityDashboard from "../features/activities/dashboard/ActivityDashboard";
 import ActivityForm from "../features/activities/form/ActivityForm";
 import ActivityDetails from "../features/activities/details/ActivityDetails";
+import LoginForm from "../features/users/LoginForm";
 
 
 export const routes : RouteObject[] = [ 
@@ -31,6 +32,10 @@ export const routes : RouteObject[] = [
             {
                 path: "manage/:id",
                 element: <ActivityForm submitting={false} key="manageactivity" />,
+            },
+            {
+                path: "login",
+                element: <LoginForm />,
             },
         ],
     },
