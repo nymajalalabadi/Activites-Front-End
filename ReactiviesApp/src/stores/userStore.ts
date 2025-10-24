@@ -7,7 +7,6 @@ import { router } from "../router/Router";
 
 export default class UserStore {
 
-
     constructor() {
         makeAutoObservable(this);
     }
@@ -34,6 +33,7 @@ export default class UserStore {
 
     logout = () => {
         store.commonStore.setToken(null);
+        localStorage.removeItem('jwt');
         this.user = null;
         router.navigate('/');
     }

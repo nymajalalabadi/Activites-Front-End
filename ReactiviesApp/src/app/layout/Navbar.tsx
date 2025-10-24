@@ -1,10 +1,11 @@
 import React from 'react';
-import { Container, Menu, Image, Button } from 'semantic-ui-react';
+import { Container, Menu, Image, Button, Dropdown } from 'semantic-ui-react';
 import { NavLink } from 'react-router-dom';
-
-
+import { useStore } from '../../stores/store';
 
 export default function NavBar(){
+
+    const {userStore:{user, logout}} = useStore();
 
     return (
 
@@ -18,6 +19,15 @@ export default function NavBar(){
                 </Menu.Item>
                 <Menu.Item name='Activities' as={NavLink} to='/createActivity'>
                 <Button className="ui positive button">Create Activity</Button>
+                </Menu.Item>
+                <Menu.Item position='right'>
+                    <Image src={user?.avatr || "/assets/user.png"} avatar />
+                    <Dropdown pointing='top left' text={user?.displayName}>
+                        <Dropdown.Menu>
+                            <Dropdown.Item text='My profile' icon='user' as={NavLink} to={`/profile/${user?.username}`} />
+                            <Dropdown.Item text='Logout' icon='power' onClick={logout} />
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Menu.Item>
             </Container>
         </Menu>

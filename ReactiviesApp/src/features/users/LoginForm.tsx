@@ -10,7 +10,7 @@ const LoginForm = () => {
     const {userStore} = useStore();
 
   return (
-    <Formik initialValues={{email: '', password: ''}} onSubmit={(values) => userStore.login(values)}>
+    <Formik initialValues={{email: '', password: ''}}  onSubmit={(values) => userStore.login(values)}>
       {({ handleSubmit, isSubmitting }) => (
         <Form onSubmit={handleSubmit} autoComplete='off' className='ui form'>
           <Field type="email" name="email" placeholder="Email" />

@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Container, Header, Icon } from 'semantic-ui-react'
+import { observer } from 'mobx-react-lite'
+import { useStore } from '../../stores/store'
 
 const HomePage = () => {
+
+  const {userStore} = useStore();
+
+  
 
   return (
     <div className="homepage-container">
@@ -28,15 +34,29 @@ const HomePage = () => {
           </div>
 
           <div className="button-section">
-            <Button
-              as={Link}
-              to='/login'
-              size='massive'
-              className="cta-button"
-            >
-              <Icon name='rocket' style={{ marginRight: '0.5em' }} />
-              Login
-            </Button>
+            {
+              userStore.isLoggedIn ? (
+                <Button
+                  as={Link}
+                  to='/activities'
+                  size='massive'
+                  className="cta-button"
+                >
+                  <Icon name='rocket' style={{ marginRight: '0.5em' }} />
+                  Activities
+                </Button>
+              ) : (
+                <Button
+                  as={Link}
+                  to='/login'
+                  size='massive'
+                  className="cta-button"
+                >
+                  <Icon name='rocket' style={{ marginRight: '0.5em' }} />
+                  Login
+                </Button>
+              )
+            }
           </div>
         </div>
 
@@ -75,4 +95,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default observer(HomePage)
