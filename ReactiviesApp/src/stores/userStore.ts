@@ -4,6 +4,7 @@ import { LoginAsync } from "../services/Account";
 import { store } from "./store";
 import { runInAction } from "mobx";
 import { router } from "../router/Router";
+import { currentUser } from "../services/Account";
 
 export default class UserStore {
 
@@ -33,8 +34,19 @@ export default class UserStore {
 
     logout = () => {
         store.commonStore.setToken(null);
-        localStorage.removeItem('jwt');
         this.user = null;
         router.navigate('/');
     }
+
+    getUser = async () => {
+        try {
+            const user = await currentUser();
+            runInAction(() => {
+                this.user = user;
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }

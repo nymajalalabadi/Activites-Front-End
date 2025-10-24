@@ -8,3 +8,8 @@ export function LoginAsync(user : UserFormValues) {
 export function registerAsync(user : UserFormValues) {
     return http.post("/Account/Register", user).then(({data}) => data);
 }
+
+export function currentUser()
+{
+    return http.get("/Account/CurrentUser").then(({data}) => data);
+}
