@@ -1,10 +1,19 @@
 import axios from "axios";
+import { store } from "../stores/store";
 
 const BASE_URL = 'https://localhost:7170/api';
 
 const app = axios.create({
     baseURL: BASE_URL,
     withCredentials: true, //http-only => cookie
+});
+
+app.interceptors.request.use(config => {
+    const token = store.commonStore.token;
+    if(token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
 });
 
 const responseBody = (response) => response.data;
